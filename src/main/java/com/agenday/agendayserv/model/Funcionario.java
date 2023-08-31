@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "funcionario", uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "senha" })})
+@Table(name = "funcionario", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }, name = "cku_email_funcionario")})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
