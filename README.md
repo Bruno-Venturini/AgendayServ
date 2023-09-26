@@ -8,5 +8,5 @@ A solução conta com agendamento de clientes, aceite de agendamento, visualiza�
 
 Recursos utilizados:
 - Java 17;
-- OpenJDK 17.0.8.
+- OpenJDK 17.0.8;
 - Springboot 2.17.15.
