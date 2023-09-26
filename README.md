@@ -7,6 +7,7 @@ Este repositório tem o propósito de solucionar o problema da cliente "Fran Bon
 A solução conta com agendamento de clientes, aceite de agendamento, visualização de horários, cadastro de cliente, funcionário e empresa e afins.
 
 Recursos utilizados:
+
 Java 17;
 OpenJDK 17.0.8;
 Springboot 2.17.15;
