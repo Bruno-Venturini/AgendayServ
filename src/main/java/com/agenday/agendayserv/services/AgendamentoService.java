@@ -15,4 +15,8 @@ public class AgendamentoService {
     public List<Agendamento> getAgendamentos() {
         return repository.findAll();
     }
+
+    public void addAgendamento(Agendamento agendamento) {
+
+    }
 }
