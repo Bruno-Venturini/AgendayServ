@@ -16,7 +16,7 @@ public class AgendamentoService {
         return repository.findAll();
     }
 
-    public void addAgendamento(Agendamento agendamento) {
-
+    public void save(Agendamento agendamento) {
+        repository.save(agendamento);
     }
 }
