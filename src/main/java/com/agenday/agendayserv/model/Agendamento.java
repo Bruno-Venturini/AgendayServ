@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Agendamento {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_agendamento")
     @SequenceGenerator(name = "seq_agendamento", sequenceName = "seq_agendamento")

@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class Cliente {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_cliente")
     @SequenceGenerator(name = "seq_cliente", sequenceName = "seq_cliente")

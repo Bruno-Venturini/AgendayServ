@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class Servico {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_servico")
     @SequenceGenerator(name = "seq_servico", sequenceName = "seq_servico")

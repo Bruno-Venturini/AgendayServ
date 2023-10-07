@@ -1,33 +1,30 @@
 package com.agenday.agendayserv.services;
 
-import com.agenday.agendayserv.model.Agendamento;
 import com.agenday.agendayserv.model.Empresa;
-import com.agenday.agendayserv.repositories.AgendamentoRepository;
 import com.agenday.agendayserv.repositories.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
-public class EmpresaService {
+public class EmpresaService implements CrudService<Empresa, Long> {
     @Autowired
     private EmpresaRepository repository;
 
-    public List<Empresa> buscarTodos() {
+    public List<Empresa> obterTodos() {
         return repository.findAll();
     }
 
-    public Empresa adicionarEmpresa(Empresa empresa) {
+    public Empresa adicionar(Empresa empresa) {
         return repository.save(empresa);
     }
 
-    public Empresa atualizarEmpresa(Empresa empresa) {
+    public Empresa atualizar(Empresa empresa) {
         return repository.save(empresa);
     }
 
-    public void deletarEmpresa(Long id) {
+    public void deletar(Long id) {
         repository.deleteById(id);
     }
 }

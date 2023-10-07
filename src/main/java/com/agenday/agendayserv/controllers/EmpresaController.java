@@ -17,21 +17,21 @@ public class EmpresaController {
 
     @GetMapping
     public List<Empresa> buscarTodasEmpresas() {
-        return service.buscarTodos();
+        return service.obterTodos();
     }
 
     @PostMapping
     public Empresa adicionar(Empresa empresa) {
-        return service.adicionarEmpresa(empresa);
+        return service.adicionar(empresa);
     }
 
     @PutMapping("/{id}")
     public Empresa atualizar(@PathParam("id") Long id, Empresa empresa) {
-        return service.atualizarEmpresa(empresa);
+        return service.atualizar(empresa);
     }
 
     @DeleteMapping
     public void deletar(@PathParam("id") Long id) {
-        service.deletarEmpresa(id);
+        service.deletar(id);
     }
 }
