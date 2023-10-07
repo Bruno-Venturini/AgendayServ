@@ -20,12 +20,12 @@ public class EmpresaController {
     }
 
     @PostMapping
-    public Empresa adicionar(Empresa empresa) throws Exception {
+    public Empresa adicionar(@RequestBody Empresa empresa) throws Exception {
         return service.adicionar(empresa);
     }
 
     @PutMapping("/{id}")
-    public Empresa atualizar(@PathParam("id") Long id, Empresa empresa) {
+    public Empresa atualizar(@PathVariable Long id, @RequestBody Empresa empresa) {
         return service.atualizar(id, empresa);
     }
 

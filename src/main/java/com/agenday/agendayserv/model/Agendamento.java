@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Agendamento {
+public class Agendamento implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_agendamento")
     @SequenceGenerator(name = "seq_agendamento", sequenceName = "seq_agendamento")

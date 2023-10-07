@@ -8,13 +8,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "empresa" , uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }, name = "cku_email_empresa")})
+@Table(name = "empresa" , uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }, name = "cku_email_empresa") })
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Empresa {
-
+public class Empresa implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_empresa")
     @SequenceGenerator(name = "seq_empresa", sequenceName = "seq_empresa")

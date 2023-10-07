@@ -22,10 +22,10 @@ public class AgendamentoService extends AbstractService<Agendamento, Long> {
     }
 
     @Override
-    public Agendamento adicionar(Agendamento agendamento) throws Exception {
-        validar(agendamento);
+    public Agendamento adicionar(Agendamento entity) throws Exception {
+        validar(entity);
 
-        return super.adicionar(agendamento);
+        return super.adicionar(entity);
     }
 
     private void validar(Agendamento agendamento) throws Exception {

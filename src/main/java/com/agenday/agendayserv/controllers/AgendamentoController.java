@@ -25,12 +25,12 @@ public class AgendamentoController {
     }
 
     @PostMapping
-    public Agendamento adicionar(Agendamento agendamento) throws Exception {
+    public Agendamento adicionar(@RequestBody Agendamento agendamento) throws Exception {
         return service.adicionar(agendamento);
     }
 
     @PutMapping("/{id}")
-    public Agendamento atualizar(@PathParam("id") Long id, Agendamento agendamento)  {
+    public Agendamento atualizar(@PathVariable Long id, @RequestBody Agendamento agendamento)  {
         return service.atualizar(id, agendamento);
     }
 
