@@ -10,33 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
-public class AgendamentoService implements CrudService<Agendamento, Long> {
+public class AgendamentoService extends AbstractService<Agendamento, Long> {
     @Autowired
     private AgendamentoRepository repository;
 
-    public List<Agendamento> obterTodos() {
-        return repository.findAll();
+    @Override
+    public AgendamentoRepository getRepository() {
+        return repository;
     }
 
-    public Agendamento obterPorId(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
+    @Override
     public Agendamento adicionar(Agendamento agendamento) throws Exception {
         validar(agendamento);
 
-        return repository.save(agendamento);
-    }
-
-    public Agendamento atualizar(Agendamento agendamento) {
-        return repository.save(agendamento);
-    }
-
-    public void deletar(Long id) {
-        repository.deleteById(id);
+        return super.adicionar(agendamento);
     }
 
     private void validar(Agendamento agendamento) throws Exception {

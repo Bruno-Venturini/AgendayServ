@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/empresas")
 public class EmpresaController {
-
     @Autowired
     private EmpresaService service;
 
@@ -21,13 +20,13 @@ public class EmpresaController {
     }
 
     @PostMapping
-    public Empresa adicionar(Empresa empresa) {
+    public Empresa adicionar(Empresa empresa) throws Exception {
         return service.adicionar(empresa);
     }
 
     @PutMapping("/{id}")
     public Empresa atualizar(@PathParam("id") Long id, Empresa empresa) {
-        return service.atualizar(empresa);
+        return service.atualizar(id, empresa);
     }
 
     @DeleteMapping

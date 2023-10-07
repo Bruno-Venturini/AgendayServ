@@ -8,23 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmpresaService implements CrudService<Empresa, Long> {
+public class EmpresaService extends AbstractService<Empresa, Long> {
     @Autowired
     private EmpresaRepository repository;
 
-    public List<Empresa> obterTodos() {
-        return repository.findAll();
-    }
-
-    public Empresa adicionar(Empresa empresa) {
-        return repository.save(empresa);
-    }
-
-    public Empresa atualizar(Empresa empresa) {
-        return repository.save(empresa);
-    }
-
-    public void deletar(Long id) {
-        repository.deleteById(id);
+    @Override
+    public EmpresaRepository getRepository() {
+        return repository;
     }
 }

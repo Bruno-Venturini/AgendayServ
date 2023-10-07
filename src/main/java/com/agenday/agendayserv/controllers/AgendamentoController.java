@@ -20,7 +20,7 @@ public class AgendamentoController {
     }
 
     @GetMapping("/{id}")
-    public Agendamento obterPorId((@PathParam("id") Long id) {
+    public Agendamento obterPorId(@PathVariable Long id) {
         return service.obterPorId(id);
     }
 
@@ -30,8 +30,8 @@ public class AgendamentoController {
     }
 
     @PutMapping("/{id}")
-    public Agendamento atualizar(@PathParam("id") Long id, Agendamento agendamento) {
-        return service.atualizar(agendamento);
+    public Agendamento atualizar(@PathParam("id") Long id, Agendamento agendamento)  {
+        return service.atualizar(id, agendamento);
     }
 
     @DeleteMapping
