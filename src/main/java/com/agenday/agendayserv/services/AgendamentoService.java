@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class AgendamentoService extends AbstractService<Agendamento, Long> {
+public class AgendamentoService extends BaseService<Agendamento, Long> {
     @Autowired
     private AgendamentoRepository repository;
 
@@ -22,10 +22,10 @@ public class AgendamentoService extends AbstractService<Agendamento, Long> {
     }
 
     @Override
-    public Agendamento adicionar(Agendamento entity) throws Exception {
-        validar(entity);
+    public Agendamento add(Agendamento entity) {
+        // validar(entity);
 
-        return super.adicionar(entity);
+        return super.add(entity);
     }
 
     private void validar(Agendamento agendamento) throws Exception {
@@ -49,8 +49,7 @@ public class AgendamentoService extends AbstractService<Agendamento, Long> {
             throw new Exception("É necessário preencher o campo 'nome'");
         }
 
-        if (StringUtils.isNullOrEmpty(cliente.getEmail()) ||
-            StringUtils.isNullOrEmpty(cliente.getTelefone())) {
+        if (StringUtils.isNullOrEmpty(cliente.getEmail()) || StringUtils.isNullOrEmpty(cliente.getTelefone())) {
             throw new Exception("É necessário preencher os campos 'telefone' ou 'email'");
         }
     }

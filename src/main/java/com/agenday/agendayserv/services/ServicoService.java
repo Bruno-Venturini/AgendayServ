@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ServicoService extends AbstractService<Servico, Long> {
+public class ServicoService extends BaseService<Servico, Long> {
     @Autowired
     private ServicoRepository repository;
 

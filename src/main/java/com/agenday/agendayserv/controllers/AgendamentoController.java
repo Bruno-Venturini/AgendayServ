@@ -1,41 +1,20 @@
 package com.agenday.agendayserv.controllers;
 
 import com.agenday.agendayserv.model.Agendamento;
+import com.agenday.agendayserv.services.BaseService;
 import com.agenday.agendayserv.services.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/agendamento")
-public class AgendamentoController {
+public class AgendamentoController extends BaseController<Agendamento, Long> {
     @Autowired
     private AgendamentoService service;
 
-    @GetMapping
-    public List<Agendamento> obterTodos() {
-        return service.obterTodos();
-    }
-
-    @GetMapping("/{id}")
-    public Agendamento obterPorId(@PathVariable Long id) {
-        return service.obterPorId(id);
-    }
-
-    @PostMapping
-    public Agendamento adicionar(@RequestBody Agendamento agendamento) throws Exception {
-        return service.adicionar(agendamento);
-    }
-
-    @PutMapping("/{id}")
-    public Agendamento atualizar(@PathVariable Long id, @RequestBody Agendamento agendamento)  {
-        return service.atualizar(id, agendamento);
-    }
-
-    @DeleteMapping
-    public void deletar(@PathParam("id") Long id) {
-        service.deletar(id);
+    @Override
+    protected BaseService<Agendamento, Long> getService() {
+        return service;
     }
 }
