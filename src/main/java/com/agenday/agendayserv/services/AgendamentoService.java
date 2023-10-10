@@ -1,20 +1,23 @@
 package com.agenday.agendayserv.services;
 
-import com.agenday.agendayserv.model.Agendamento;
-import com.agenday.agendayserv.model.Cliente;
-import com.agenday.agendayserv.model.Funcionario;
-import com.agenday.agendayserv.model.Servico;
+import com.agenday.agendayserv.model.*;
 import com.agenday.agendayserv.repositories.AgendamentoRepository;
 import com.agenday.agendayserv.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AgendamentoService extends BaseService<Agendamento, Long> {
     @Autowired
     private AgendamentoRepository repository;
+
+    @Autowired
+    private ServicoService servicoService;
 
     @Override
     public AgendamentoRepository getRepository() {
@@ -26,6 +29,30 @@ public class AgendamentoService extends BaseService<Agendamento, Long> {
         // validar(entity);
 
         return super.add(entity);
+    }
+
+    public List<Agendamento> obterPorDias(LocalDate inicio, LocalDate fim) {
+        return repository.findAll(QAgendamento.agendamento.horario.between(inicio.atStartOfDay(), fim.atTime(23, 59)));
+    }
+
+    public List<LocalDate> obterDiasDisponiveis(Long idServico, LocalDate inicio, LocalDate fim) {
+        var retorno = new ArrayList<LocalDate>();
+        var expedientes = servicoService.getById(idServico).getEmpresa().getExpedientes();
+        var agendamentos = obterPorDias(inicio, fim);
+
+        for (var i = inicio; i.isBefore(fim); i = i.plusDays(1)) {
+            var dia = i;
+
+            if (expedientes.stream().anyMatch(x -> x.getDiaSemana() == dia.getDayOfWeek()))
+                continue;
+
+            if (agendamentos.stream().anyMatch(x -> x.getHorario().toLocalDate() == dia))
+                continue;
+
+            retorno.add(i);
+        }
+
+        return retorno;
     }
 
     private void validar(Agendamento agendamento) throws Exception {

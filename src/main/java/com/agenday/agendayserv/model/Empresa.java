@@ -33,7 +33,6 @@ public class Empresa implements BaseEntity {
     @Column(name = "telefone")
     private String telefone;
 
-    @OneToMany(mappedBy = "expediente_empresa", fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_empresa", updatable = true, nullable = false)
+    @OneToMany(mappedBy = "empresa", fetch = FetchType.LAZY)
     private List<ExpedienteEmpresa> expedientes;
 }
