@@ -22,7 +22,7 @@ public class ServicoController extends BaseController<Servico, Long> {
         return service;
     }
 
-    @GetMapping("/empresa/{id}")
+    @GetMapping("/empresas/{id}")
     public List<Servico> obterPorEmpresa(@PathVariable Long id) {
         return service.obterPorEmpresa(id);
     }
