@@ -1,20 +1,20 @@
 package com.agenday.agendayserv.controllers;
 
-import com.agenday.agendayserv.model.Agendamento;
+import com.agenday.agendayserv.model.Cliente;
 import com.agenday.agendayserv.services.BaseService;
-import com.agenday.agendayserv.services.AgendamentoService;
+import com.agenday.agendayserv.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/agendamentos")
-public class AgendamentoController extends BaseController<Agendamento, Long> {
+@RequestMapping("/clientes")
+public class ClienteController extends BaseController<Cliente, Long> {
     @Autowired
-    private AgendamentoService service;
+    private ClienteService service;
 
     @Override
-    protected BaseService<Agendamento, Long> getService() {
+    protected BaseService<Cliente, Long> getService() {
         return service;
     }
 }

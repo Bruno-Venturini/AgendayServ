@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Funcionario {
+public class Funcionario implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_funcionario")
     @SequenceGenerator(name = "seq_funcionario", sequenceName = "seq_funcionario")
