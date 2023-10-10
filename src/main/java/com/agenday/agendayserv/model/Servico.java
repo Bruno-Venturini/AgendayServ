@@ -1,5 +1,6 @@
 package com.agenday.agendayserv.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,14 +15,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Servico {
-
+public class Servico implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_servico")
     @SequenceGenerator(name = "seq_servico", sequenceName = "seq_servico")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa", nullable = false)
     private Empresa empresa;
