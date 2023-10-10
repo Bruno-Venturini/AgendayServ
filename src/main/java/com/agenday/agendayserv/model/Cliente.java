@@ -13,8 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Cliente {
-
+public class Cliente implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_cliente")
     @SequenceGenerator(name = "seq_cliente", sequenceName = "seq_cliente")
