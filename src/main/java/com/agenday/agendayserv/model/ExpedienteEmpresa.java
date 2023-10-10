@@ -1,12 +1,12 @@
 package com.agenday.agendayserv.model;
 
-import com.agenday.agendayserv.enums.DiaSemanaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
@@ -28,7 +28,7 @@ public class ExpedienteEmpresa {
 
     @Column(name = "dia_semana")
     @Enumerated(EnumType.STRING)
-    private DiaSemanaEnum diaSemana;
+    private DayOfWeek diaSemana;
 
     @Column(name = "abertura_matutino")
     private LocalTime aberturaMatutino;

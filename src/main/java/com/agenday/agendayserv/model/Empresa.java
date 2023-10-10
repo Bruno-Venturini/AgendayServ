@@ -6,15 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "empresa" , uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }, name = "cku_email_empresa")})
+@Table(name = "empresa" , uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }, name = "cku_email_empresa") })
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Empresa {
-
+public class Empresa implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_empresa")
     @SequenceGenerator(name = "seq_empresa", sequenceName = "seq_empresa")
@@ -32,4 +32,8 @@ public class Empresa {
 
     @Column(name = "telefone")
     private String telefone;
+
+    @OneToMany(mappedBy = "expediente_empresa", fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_empresa", updatable = true, nullable = false)
+    private List<ExpedienteEmpresa> expedientes;
 }
