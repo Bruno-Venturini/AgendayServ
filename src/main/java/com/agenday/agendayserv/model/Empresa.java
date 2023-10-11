@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,6 @@ public class Empresa implements BaseEntity {
     @Column(name = "telefone")
     private String telefone;
 
-    @OneToMany(mappedBy = "empresa", fetch = FetchType.LAZY)
-    private List<ExpedienteEmpresa> expedientes;
+    @OneToMany(mappedBy = "empresa")
+    private List<ExpedienteEmpresa> expedientes = new ArrayList<>();
 }

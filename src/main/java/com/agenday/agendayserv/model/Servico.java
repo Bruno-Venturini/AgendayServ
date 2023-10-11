@@ -22,8 +22,7 @@ public class Servico implements BaseEntity {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
     private Empresa empresa;
 

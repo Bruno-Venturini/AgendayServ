@@ -4,6 +4,7 @@ import com.agenday.agendayserv.model.Agendamento;
 import com.agenday.agendayserv.services.AgendamentoService;
 import com.agenday.agendayserv.services.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -23,8 +24,8 @@ public class AgendamentoController extends BaseController<Agendamento, Long> {
     @GetMapping("/servicos/{idServico}")
     public List<LocalDate> obterDiasDisponiveis(
             @PathVariable Long idServico,
-            @RequestParam LocalDate inicio,
-            @RequestParam LocalDate fim) {
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate inicio,
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fim) {
         return service.obterDiasDisponiveis(idServico, inicio, fim);
     }
 }

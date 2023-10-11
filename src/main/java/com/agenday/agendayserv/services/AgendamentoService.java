@@ -43,7 +43,7 @@ public class AgendamentoService extends BaseService<Agendamento, Long> {
         for (var i = inicio; i.isBefore(fim); i = i.plusDays(1)) {
             var dia = i;
 
-            if (expedientes.stream().anyMatch(x -> x.getDiaSemana() == dia.getDayOfWeek()))
+            if (expedientes.isEmpty() || expedientes.stream().noneMatch(x -> x.getDiaSemana() == dia.getDayOfWeek()))
                 continue;
 
             if (agendamentos.stream().anyMatch(x -> x.getHorario().toLocalDate() == dia))

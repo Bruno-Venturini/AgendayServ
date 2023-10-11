@@ -22,7 +22,7 @@ public class ExpedienteEmpresa {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_empresa", updatable = true, nullable = false)
     private Empresa empresa;
 
