@@ -1,6 +1,6 @@
 package com.agenday.agendayserv.services;
 
-import com.agenday.agendayserv.model.BaseEntity;
+import com.agenday.agendayserv.models.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

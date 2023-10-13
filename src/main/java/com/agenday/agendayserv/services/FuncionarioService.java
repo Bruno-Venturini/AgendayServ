@@ -1,7 +1,7 @@
 package com.agenday.agendayserv.services;
 
-import com.agenday.agendayserv.model.Funcionario;
-import com.agenday.agendayserv.model.QFuncionario;
+import com.agenday.agendayserv.models.Funcionario;
+import com.agenday.agendayserv.models.QFuncionario;
 import com.agenday.agendayserv.repositories.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

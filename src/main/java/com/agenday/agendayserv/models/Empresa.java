@@ -1,4 +1,4 @@
-package com.agenday.agendayserv.model;
+package com.agenday.agendayserv.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

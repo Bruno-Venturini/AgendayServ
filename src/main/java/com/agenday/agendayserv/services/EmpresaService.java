@@ -1,6 +1,6 @@
 package com.agenday.agendayserv.services;
 
-import com.agenday.agendayserv.model.Empresa;
+import com.agenday.agendayserv.models.Empresa;
 import com.agenday.agendayserv.repositories.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.agenday.agendayserv.controllers;
 
-import com.agenday.agendayserv.model.Cliente;
+import com.agenday.agendayserv.models.Cliente;
 import com.agenday.agendayserv.services.BaseService;
 import com.agenday.agendayserv.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;

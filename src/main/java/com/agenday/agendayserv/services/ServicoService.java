@@ -1,7 +1,7 @@
 package com.agenday.agendayserv.services;
 
-import com.agenday.agendayserv.model.QServico;
-import com.agenday.agendayserv.model.Servico;
+import com.agenday.agendayserv.models.QServico;
+import com.agenday.agendayserv.models.Servico;
 import com.agenday.agendayserv.repositories.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class ServicoService extends BaseService<Servico, Long> {
         return repository;
     }
 
-    public List<Servico> obterPorEmpresa(Long id) {
-        return getRepository().findAll(QServico.servico.empresa.id.eq(id));
+    public List<Servico> obterAtivoPorEmpresa(Long id, Boolean ativo) {
+        return repository.findAll(QServico.servico.empresa.id.eq(id).and(QServico.servico.ativo.eq(ativo)));
     }
 }

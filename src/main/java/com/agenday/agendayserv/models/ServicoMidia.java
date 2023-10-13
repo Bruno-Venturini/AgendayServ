@@ -1,4 +1,4 @@
-package com.agenday.agendayserv.model;
+package com.agenday.agendayserv.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class ServicoMidia {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_servico_midia")
     @SequenceGenerator(name = "seq_servico_midia", sequenceName = "seq_servico_midia")

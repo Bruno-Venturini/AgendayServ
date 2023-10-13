@@ -1,4 +1,4 @@
-package com.agenday.agendayserv.model;
+package com.agenday.agendayserv.models;
 
 import com.agenday.agendayserv.enums.StatusAgendamentoEnum;
 import lombok.AllArgsConstructor;
@@ -33,6 +33,10 @@ public class Agendamento implements BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_funcionario", nullable = false)
     private Funcionario funcionario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pagamento")
+    private Pagamento pagamento;
 
     @Column(name = "horario")
     private LocalDateTime horario;

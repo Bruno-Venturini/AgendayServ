@@ -1,4 +1,4 @@
-package com.agenday.agendayserv.model;
+package com.agenday.agendayserv.models;
 
 import com.agenday.agendayserv.enums.MetodoPagamentoEnum;
 import com.agenday.agendayserv.enums.StatusPagamentoEnum;
@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class Pagamento {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pagamento")
     @SequenceGenerator(name = "seq_pagamento", sequenceName = "seq_pagamento")

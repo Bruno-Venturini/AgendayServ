@@ -1,6 +1,6 @@
 package com.agenday.agendayserv.controllers;
 
-import com.agenday.agendayserv.model.Empresa;
+import com.agenday.agendayserv.models.Empresa;
 import com.agenday.agendayserv.services.BaseService;
 import com.agenday.agendayserv.services.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;

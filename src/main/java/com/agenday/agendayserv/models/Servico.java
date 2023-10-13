@@ -1,6 +1,5 @@
-package com.agenday.agendayserv.model;
+package com.agenday.agendayserv.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "servico")
@@ -25,6 +25,9 @@ public class Servico implements BaseEntity {
     @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
     private Empresa empresa;
+
+    @OneToMany(mappedBy = "servico")
+    private List<ServicoMidia> midias;
 
     @Column(name = "nome", nullable = false)
     private String nome;

@@ -1,6 +1,7 @@
 package com.agenday.agendayserv.services;
 
-import com.agenday.agendayserv.model.*;
+import com.agenday.agendayserv.enums.StatusAgendamentoEnum;
+import com.agenday.agendayserv.models.*;
 import com.agenday.agendayserv.repositories.AgendamentoRepository;
 import com.agenday.agendayserv.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,28 +32,57 @@ public class AgendamentoService extends BaseService<Agendamento, Long> {
         return super.add(entity);
     }
 
-    public List<Agendamento> obterPorDias(LocalDate inicio, LocalDate fim) {
-        return repository.findAll(QAgendamento.agendamento.horario.between(inicio.atStartOfDay(), fim.atTime(23, 59)));
+    public List<Agendamento> obterPorStatus(StatusAgendamentoEnum status) {
+        return repository.findAll(QAgendamento.agendamento.status.eq(status));
+    }
+
+    public List<Agendamento> obterAbertosPorData(LocalDate inicio, LocalDate fim) {
+        return repository.findAll(QAgendamento.agendamento.status.eq(StatusAgendamentoEnum.ABERTO)
+                .and(QAgendamento.agendamento.horario.between(inicio.atStartOfDay(), fim.atTime(23, 59))));
     }
 
     public List<LocalDate> obterDiasDisponiveis(Long idServico, LocalDate inicio, LocalDate fim) {
-        var retorno = new ArrayList<LocalDate>();
+        var dias = new ArrayList<LocalDate>();
         var expedientes = servicoService.getById(idServico).getEmpresa().getExpedientes();
-        var agendamentos = obterPorDias(inicio, fim);
+
+        if (expedientes.isEmpty())
+            return dias;
+
+        var agendamentos = obterAbertosPorData(inicio, fim);
 
         for (var i = inicio; i.isBefore(fim); i = i.plusDays(1)) {
             var dia = i;
 
-            if (expedientes.isEmpty() || expedientes.stream().noneMatch(x -> x.getDiaSemana() == dia.getDayOfWeek()))
+            if (expedientes.stream().noneMatch(expediente -> expediente.getDiaSemana() == dia.getDayOfWeek()))
                 continue;
 
-            if (agendamentos.stream().anyMatch(x -> x.getHorario().toLocalDate() == dia))
+            if (agendamentos.stream().anyMatch(expediente -> expediente.getHorario().toLocalDate() == dia))
                 continue;
 
-            retorno.add(i);
+            dias.add(i);
         }
 
-        return retorno;
+        return dias;
+    }
+
+    public void confirmar(Agendamento agendamento, LocalDateTime horario) {
+        agendamento.setStatus(StatusAgendamentoEnum.ABERTO);
+        agendamento.setHorario(horario);
+
+        update(agendamento.getId(), agendamento);
+    }
+
+    public void cancelar(Agendamento agendamento) {
+        agendamento.setStatus(StatusAgendamentoEnum.CANCELADO);
+
+        update(agendamento.getId(), agendamento);
+    }
+
+    public void concluir(Agendamento agendamento, Pagamento pagamento) {
+        agendamento.setStatus(StatusAgendamentoEnum.CONCLUIDO);
+        agendamento.setPagamento(pagamento);
+
+        update(agendamento.getId(), agendamento);
     }
 
     private void validar(Agendamento agendamento) throws Exception {

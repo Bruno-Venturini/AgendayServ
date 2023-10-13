@@ -1,6 +1,6 @@
 package com.agenday.agendayserv.repositories;
 
-import com.agenday.agendayserv.model.Cliente;
+import com.agenday.agendayserv.models.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
