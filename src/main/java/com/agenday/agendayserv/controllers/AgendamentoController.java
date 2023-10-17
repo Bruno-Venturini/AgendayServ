@@ -1,5 +1,6 @@
 package com.agenday.agendayserv.controllers;
 
+import com.agenday.agendayserv.controllers.dtos.AgendamentoDto;
 import com.agenday.agendayserv.models.Agendamento;
 import com.agenday.agendayserv.services.AgendamentoService;
 import com.agenday.agendayserv.services.BaseService;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
-public class AgendamentoController extends BaseController<Agendamento, Long> {
+public class AgendamentoController extends BaseController<Agendamento, AgendamentoDto, Long> {
     @Autowired
     private AgendamentoService service;
 

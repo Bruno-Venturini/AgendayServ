@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/servicos")
-public class ServicoController extends BaseController<Servico, Long> {
+public class ServicoController extends BaseController<Servico, ServicoDto, Long> {
     @Autowired
     private ServicoService service;
 

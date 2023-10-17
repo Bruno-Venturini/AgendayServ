@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class BaseService<T extends BaseEntity, ID> {
     @Autowired
-    private ModelMapper autoMapper;
+    private ModelMapper modelMapper;
 
     protected abstract JpaRepository<T, ID> getRepository();
 
@@ -32,7 +32,7 @@ public abstract class BaseService<T extends BaseEntity, ID> {
         var dbEntity = getRepository().findById(id)
                 .orElseThrow(() -> new NotFoundException(StringUtils.remove(getRepository().getClass().getName(), "Repository")));
 
-        autoMapper.map(entity, dbEntity);
+        modelMapper.map(entity, dbEntity);
 
         return getRepository().save(dbEntity);
     }
