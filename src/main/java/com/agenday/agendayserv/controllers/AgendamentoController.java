@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
@@ -22,7 +23,7 @@ public class AgendamentoController extends BaseController<Agendamento, Long> {
     }
 
     @GetMapping("/servicos/{idServico}")
-    public ResponseEntity<?> obterDiasDisponiveis(
+    public ResponseEntity<List<LocalDate>> obterDiasDisponiveis(
             @PathVariable Long idServico,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate inicio,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fim) {

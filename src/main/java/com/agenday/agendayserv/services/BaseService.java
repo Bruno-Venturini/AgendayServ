@@ -20,7 +20,8 @@ public abstract class BaseService<T extends BaseEntity, ID> {
     }
 
     public T getById(ID id) {
-        return getRepository().findById(id).orElse(null);
+        return getRepository().findById(id)
+                .orElseThrow(() -> new NotFoundException(StringUtils.remove(getRepository().getClass().getName(), "Repository")));
     }
 
     public T add(T entity) {
@@ -28,15 +29,8 @@ public abstract class BaseService<T extends BaseEntity, ID> {
     }
 
     public T update(ID id, T entity) {
-        var exists = getRepository().findById(id);
-
-        if (exists.isEmpty()) {
-            var object = getRepository().getClass().getName();
-
-            throw new NotFoundException(StringUtils.remove(object, "Repository"));
-        }
-
-        var dbEntity = exists.get();
+        var dbEntity = getRepository().findById(id)
+                .orElseThrow(() -> new NotFoundException(StringUtils.remove(getRepository().getClass().getName(), "Repository")));
 
         autoMapper.map(entity, dbEntity);
 

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/servicos")
 public class ServicoController extends BaseController<Servico, Long> {
@@ -19,7 +21,7 @@ public class ServicoController extends BaseController<Servico, Long> {
     }
 
     @GetMapping("/empresas/{id}")
-    public ResponseEntity<?> obterPorEmpresa(@PathVariable Long id, @RequestParam Boolean ativo) {
+    public ResponseEntity<List<Servico>> obterPorEmpresa(@PathVariable Long id, @RequestParam Boolean ativo) {
         return ResponseEntity.ok(service.obterAtivoPorEmpresa(id, ativo));
     }
 }
