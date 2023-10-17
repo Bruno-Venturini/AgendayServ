@@ -1,5 +1,6 @@
 package com.agenday.agendayserv.controllers;
 
+import com.agenday.agendayserv.controllers.dtos.ServicoDto;
 import com.agenday.agendayserv.models.Servico;
 import com.agenday.agendayserv.services.BaseService;
 import com.agenday.agendayserv.services.ServicoService;
@@ -21,7 +22,9 @@ public class ServicoController extends BaseController<Servico, Long> {
     }
 
     @GetMapping("/empresas/{id}")
-    public ResponseEntity<List<Servico>> obterPorEmpresa(@PathVariable Long id, @RequestParam Boolean ativo) {
-        return ResponseEntity.ok(service.obterAtivoPorEmpresa(id, ativo));
+    public ResponseEntity<List<ServicoDto>> obterPorEmpresa(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "true") Boolean ativo) {
+        return ResponseEntity.ok(ServicoDto.fromEntity(service.obterAtivoPorEmpresa(id, ativo)));
     }
 }

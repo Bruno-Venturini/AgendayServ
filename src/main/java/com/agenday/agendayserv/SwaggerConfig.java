@@ -9,6 +9,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -19,7 +22,9 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.agenday.agendayserv.controllers"))
                 .build()
                 .pathMapping("/")
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                .directModelSubstitute(LocalDate.class, java.sql.Date.class)
+                .directModelSubstitute(LocalDateTime.class, java.util.Date.class);
     }
 
     private ApiInfo apiInfo() {
