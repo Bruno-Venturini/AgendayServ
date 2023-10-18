@@ -3,6 +3,7 @@ package com.agenday.agendayserv.controllers.dtos;
 import com.agenday.agendayserv.enums.MetodoPagamentoEnum;
 import com.agenday.agendayserv.enums.StatusPagamentoEnum;
 import com.agenday.agendayserv.models.Pagamento;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,16 @@ import java.util.List;
 @Getter
 @Setter
 public class PagamentoDto {
+    @JsonView(View.Public.class)
     private Long id;
+
+    @JsonView(View.Internal.class)
     private BigDecimal valor = BigDecimal.ZERO;
+
+    @JsonView(View.Internal.class)
     private MetodoPagamentoEnum metodoPagamento;
+
+    @JsonView(View.Internal.class)
     private StatusPagamentoEnum statusPagamento;
 
     public static List<PagamentoDto> fromEntity(List<Pagamento> pagamentos) {
