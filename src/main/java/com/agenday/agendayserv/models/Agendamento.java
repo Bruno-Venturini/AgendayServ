@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "agendamento")
@@ -38,8 +39,8 @@ public class Agendamento implements BaseEntity {
     @JoinColumn(name = "id_pagamento")
     private Pagamento pagamento;
 
-    @Column(name = "horario")
-    private LocalDateTime horario;
+    @Column(name = "data_hora")
+    private LocalDateTime dataHora;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -47,4 +48,16 @@ public class Agendamento implements BaseEntity {
 
     @Column(name = "descricao")
     private String descricao;
+
+    public boolean horarioIsBetween(LocalTime inicio, LocalTime fim) {
+        return this.dataHora.toLocalTime().isAfter(inicio) && this.dataHora.toLocalTime().isBefore(fim);
+    }
+
+    public LocalTime getHoraInicioAgendamento() {
+        return this.dataHora.toLocalTime();
+    }
+
+    public LocalTime getHoraFimAgendamento() {
+        return this.dataHora.plusMinutes(this.servico.getDuracao()).toLocalTime();
+    }
 }

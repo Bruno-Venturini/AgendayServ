@@ -50,6 +50,6 @@ public class AgendamentoDto {
     }
 
     public static AgendamentoDto fromEntity(Agendamento agendamento) {
-        return new AgendamentoDto(agendamento.getId(), ClienteDto.fromEntity(agendamento.getCliente()), ServicoDto.fromEntity(agendamento.getServico()), FuncionarioDto.fromEntity(agendamento.getFuncionario()), PagamentoDto.fromEntity(agendamento.getPagamento()), agendamento.getHorario(), agendamento.getStatus(), agendamento.getDescricao());
+        return new AgendamentoDto(agendamento.getId(), ClienteDto.fromEntity(agendamento.getCliente()), ServicoDto.fromEntity(agendamento.getServico()), FuncionarioDto.fromEntity(agendamento.getFuncionario()), PagamentoDto.fromEntity(agendamento.getPagamento()), agendamento.getDataHora(), agendamento.getStatus(), agendamento.getDescricao());
     }
 }
