@@ -2,7 +2,6 @@ package com.agenday.agendayserv.services;
 
 import com.agenday.agendayserv.enums.StatusAgendamentoEnum;
 import com.agenday.agendayserv.models.*;
-import com.agenday.agendayserv.models.QAgendamento;
 import com.agenday.agendayserv.models.horariolivre.AgendamentoLivreDTO;
 import com.agenday.agendayserv.models.horariolivre.HorarioLivreDTO;
 import com.agenday.agendayserv.repositories.AgendamentoRepository;
@@ -55,7 +54,7 @@ public class AgendamentoService extends BaseService<Agendamento, Long> {
 
     public List<Agendamento> obterAbertosPorData(LocalDate inicio, LocalDate fim) {
         return repository.findAll(QAgendamento.agendamento.status.eq(StatusAgendamentoEnum.ABERTO)
-                .and(QAgendamento.agendamento.horario.between(inicio.atStartOfDay(), fim.atTime(23, 59))));
+                .and(QAgendamento.agendamento.dataHora.between(inicio.atStartOfDay(), fim.atTime(23, 59))));
     }
 
     public List<LocalDate> obterDiasDisponiveis(Long idServico, LocalDate inicio, LocalDate fim) {
@@ -151,7 +150,7 @@ public class AgendamentoService extends BaseService<Agendamento, Long> {
 
     public List<Agendamento> buscarAgendamentosPorFuncionarioData (Long idFuncionario, LocalDate data) {
         return repository.findAll(qAgendamento.funcionario.id.eq(idFuncionario)
-                .and(qAgendamento.horario.between(data.atStartOfDay(), data.atTime(23, 59))));
+                .and(qAgendamento.dataHora.between(data.atStartOfDay(), data.atTime(23, 59))));
     }
 
     public void confirmar(Agendamento agendamento, LocalDateTime horario) {
