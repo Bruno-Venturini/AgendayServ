@@ -68,8 +68,8 @@ public abstract class BaseController<T extends BaseEntity, D, ID> {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<D> delete(@PathParam("id") ID id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<D> delete(@PathVariable ID id) {
         getService().delete(id);
 
         return ResponseEntity.noContent().build();
