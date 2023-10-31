@@ -1,6 +1,8 @@
 package com.agenday.agendayserv.controllers;
 
+import com.agenday.agendayserv.controllers.dtos.AgendamentoDto;
 import com.agenday.agendayserv.models.Agendamento;
+import com.agenday.agendayserv.models.horariolivre.HorarioLivreDTO;
 import com.agenday.agendayserv.services.AgendamentoService;
 import com.agenday.agendayserv.services.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
-public class AgendamentoController extends BaseController<Agendamento, Long> {
+public class AgendamentoController extends BaseController<Agendamento, AgendamentoDto, Long> {
     @Autowired
     private AgendamentoService service;
 
@@ -28,5 +30,12 @@ public class AgendamentoController extends BaseController<Agendamento, Long> {
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate inicio,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fim) {
         return ResponseEntity.ok(service.obterDiasDisponiveis(idServico, inicio, fim));
+    }
+
+    @GetMapping("/horarios-disponiveis/empresa/{idEmpresa}")
+    public ResponseEntity<List<HorarioLivreDTO>> obterHorariosLivres (
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate data,
+            @PathVariable Long idEmpresa) {
+        return ResponseEntity.ok(service.obterHorariosLivres(data, idEmpresa));
     }
 }

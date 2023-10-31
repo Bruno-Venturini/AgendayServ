@@ -7,7 +7,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
+import java.util.Map;
 
 @Entity
 @Table(name = "expediente_empresa")
@@ -15,7 +18,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ExpedienteEmpresa {
+public class ExpedienteEmpresa implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expediente_empresa")
     @SequenceGenerator(name = "seq_expediente_empresa", sequenceName = "seq_expediente_empresa")

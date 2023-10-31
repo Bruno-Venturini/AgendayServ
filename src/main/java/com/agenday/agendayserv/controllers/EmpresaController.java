@@ -1,5 +1,6 @@
 package com.agenday.agendayserv.controllers;
 
+import com.agenday.agendayserv.controllers.dtos.EmpresaDto;
 import com.agenday.agendayserv.models.Empresa;
 import com.agenday.agendayserv.services.BaseService;
 import com.agenday.agendayserv.services.EmpresaService;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/empresas")
-public class EmpresaController extends BaseController<Empresa, Long> {
+public class EmpresaController extends BaseController<Empresa, EmpresaDto, Long> {
     @Autowired
     private EmpresaService service;
 
