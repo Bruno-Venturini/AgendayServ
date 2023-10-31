@@ -2,6 +2,7 @@ package com.agenday.agendayserv.services;
 
 import com.agenday.agendayserv.enums.StatusAgendamentoEnum;
 import com.agenday.agendayserv.models.*;
+import com.agenday.agendayserv.models.QAgendamento;
 import com.agenday.agendayserv.models.horariolivre.AgendamentoLivreDTO;
 import com.agenday.agendayserv.models.horariolivre.HorarioLivreDTO;
 import com.agenday.agendayserv.repositories.AgendamentoRepository;
