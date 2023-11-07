@@ -1,5 +1,6 @@
 package com.agenday.agendayserv.empresa.expediente;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +18,14 @@ public interface ExpedienteEmpresaRepresentation {
     class ExpedienteEmpresaCreate {
         @NotNull(message = "O dia da semana não pode ser nulo")
         private DayOfWeek diaSemana;
-        
+
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime aberturaMatutino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime fechamentoMatutino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime aberturaVespertino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime fechamentoVespertino;
 
         @NotNull(message = "A empresa não pode ser nula")
@@ -35,9 +40,13 @@ public interface ExpedienteEmpresaRepresentation {
         @NotNull(message = "O dia da semana não pode ser nulo")
         private DayOfWeek diaSemana;
 
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime aberturaMatutino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime fechamentoMatutino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime aberturaVespertino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime fechamentoVespertino;
     }
 
@@ -47,15 +56,21 @@ public interface ExpedienteEmpresaRepresentation {
     @Data
     class ExpedienteEmpresaResponse {
         private Long id;
+        private DayOfWeek diaSemana;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime aberturaMatutino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime fechamentoMatutino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime aberturaVespertino;
+        @JsonFormat(pattern = "HH:mm:ss")
         private LocalTime fechamentoVespertino;
         private Long empresa;
 
         public static ExpedienteEmpresaResponse from(ExpedienteEmpresa expedienteEmpresa) {
             return ExpedienteEmpresaResponse.builder()
                     .id(expedienteEmpresa.getId())
+                    .diaSemana(expedienteEmpresa.getDiaSemana())
                     .aberturaMatutino(expedienteEmpresa.getAberturaMatutino())
                     .fechamentoMatutino(expedienteEmpresa.getFechamentoMatutino())
                     .aberturaVespertino(expedienteEmpresa.getAberturaVespertino())

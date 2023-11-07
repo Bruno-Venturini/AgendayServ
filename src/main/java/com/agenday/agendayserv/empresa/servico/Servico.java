@@ -1,13 +1,15 @@
 package com.agenday.agendayserv.empresa.servico;
 
 import com.agenday.agendayserv.empresa.Empresa;
+import com.agenday.agendayserv.empresa.funcionario.Funcionario;
 import com.agenday.agendayserv.empresa.servico.midia.ServicoMidia;
-import com.agenday.agendayserv.models.BaseEntity;
+
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "servico")
@@ -16,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class Servico implements BaseEntity {
+public class Servico {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_servico")
     @SequenceGenerator(name = "seq_servico", sequenceName = "seq_servico")
@@ -44,4 +46,7 @@ public class Servico implements BaseEntity {
 
     @OneToMany(mappedBy = "servico")
     private List<ServicoMidia> midias;
+
+    @ManyToMany(mappedBy = "servicos")
+    private Set<Funcionario> funcionarios;
 }

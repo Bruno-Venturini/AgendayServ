@@ -13,10 +13,8 @@ import com.agenday.agendayserv.empresa.servico.Servico;
 import com.agenday.agendayserv.empresa.servico.ServicoService;
 import com.agenday.agendayserv.exceptions.BusinessException;
 import com.agenday.agendayserv.exceptions.NotFoundException;
-import com.agenday.agendayserv.models.QAgendamento;
 import com.agenday.agendayserv.utils.StringUtils;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +28,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class AgendamentoService {
     private ModelMapper modelMapper;
     private AgendamentoRepository repository;
@@ -96,20 +93,31 @@ public class AgendamentoService {
 
     public List<LocalDate> obterDiasDisponiveis(Long idServico, LocalDate inicio, LocalDate fim) {
         var dias = new ArrayList<LocalDate>();
-        var expedientes = servicoService.getById(idServico).getEmpresa().getExpedientes();
+        var servico = servicoService.getById(idServico);
+        var expedientes = servico.getEmpresa().getExpedientes();
 
         if (expedientes.isEmpty())
             return dias;
 
         var agendamentos = obterAbertosPorData(inicio, fim);
 
-        for (var i = inicio; i.isBefore(fim); i = i.plusDays(1)) {
+        for (var i = inicio; i.isBefore(fim) || i.isEqual(fim); i = i.plusDays(1)) {
             var dia = i;
 
-            if (expedientes.stream().noneMatch(expediente -> expediente.getDiaSemana() == dia.getDayOfWeek()))
+            var expediente = expedientes.stream()
+                    .filter(exp -> exp.getDiaSemana() == dia.getDayOfWeek())
+                    .findFirst();
+
+            if (expediente.isEmpty())
                 continue;
 
-            if (agendamentos.stream().anyMatch(expediente -> expediente.getDataHora().toLocalDate() == dia))
+            var minutosExpediente = expediente.get().obterTotalMinutos();
+            var minutosAgendadas = agendamentos.stream()
+                    .filter(agendamento -> agendamento.getDataHora().toLocalDate() == dia)
+                    .mapToInt(agendamento -> agendamento.getServico().getDuracao())
+                    .sum();
+
+            if (minutosExpediente < (minutosAgendadas + servico.getDuracao()))
                 continue;
 
             dias.add(i);
@@ -118,8 +126,9 @@ public class AgendamentoService {
         return dias;
     }
 
-    public List<HorarioLivreDTO> obterHorariosLivres(LocalDate data, Long idEmpresa) {
-        List<Funcionario> funcionarios = funcionarioService.obterPorEmpresa(idEmpresa);
+    public List<HorarioLivreDTO> obterHorariosLivres(LocalDate data, Long idServico) {
+        var idEmpresa = servicoService.getById(idServico).getEmpresa().getId();
+        List<Funcionario> funcionarios = funcionarioService.obterPorServico(idServico);
         ExpedienteEmpresa expedienteEmpresa = expedienteEmpresaService.findByDayOfWeek(idEmpresa, data.getDayOfWeek());
 
         List<HorarioLivreDTO> horariosLivres = new ArrayList<>();
@@ -143,49 +152,56 @@ public class AgendamentoService {
         HorarioLivreDTO horarioLivreFuncionario = new HorarioLivreDTO();
         horarioLivreFuncionario.setFuncionario(funcionario);
 
-        AgendamentoLivreDTO vespertino = new AgendamentoLivreDTO(expedienteEmpresa.getAberturaMatutino(), expedienteEmpresa.getFechamentoVespertino());
-        AgendamentoLivreDTO matutino = new AgendamentoLivreDTO(expedienteEmpresa.getAberturaVespertino(), expedienteEmpresa.getFechamentoMatutino());
+        AgendamentoLivreDTO matutino = new AgendamentoLivreDTO(expedienteEmpresa.getAberturaMatutino(), expedienteEmpresa.getFechamentoMatutino());
+        AgendamentoLivreDTO vespertino = new AgendamentoLivreDTO(expedienteEmpresa.getAberturaVespertino(), expedienteEmpresa.getFechamentoVespertino());
 
-        horarioLivreFuncionario.addAgendamento(vespertino);
         horarioLivreFuncionario.addAgendamento(matutino);
+        horarioLivreFuncionario.addAgendamento(vespertino);
+
         return horarioLivreFuncionario;
     }
 
-
     public HorarioLivreDTO montarHorariosLivresFuncionarioComBaseAgendamentos(HorarioLivreDTO horarioLivreFuncionario, List<Agendamento> agendamentos) {
-        horarioLivreFuncionario.getAgendamentosLivre().forEach(periodoLivre -> {
-            agendamentos.forEach(agendamento -> {
-                if (agendamento.horarioIsBetween(periodoLivre.getInicioHorarioLivre(), periodoLivre.getFimHorarioLivre())) {
-                    AgendamentoLivreDTO horarioAposAgendamento =
-                            new AgendamentoLivreDTO(periodoLivre.getInicioHorarioLivre(), agendamento.getDataHora().toLocalTime());
+        List<AgendamentoLivreDTO> agendamentosLivre = horarioLivreFuncionario.getAgendamentosLivre();
+        for (int i = 0; i < agendamentosLivre.size();) {
+            AgendamentoLivreDTO periodoLivre = agendamentosLivre.get(i);
+            i++;
 
-                    AgendamentoLivreDTO horarioAntesAgendamento =
-                            new AgendamentoLivreDTO(agendamento.getDataHora().toLocalTime()
-                                    .plus(Duration.ofMinutes(agendamento.getServico().getDuracao())), periodoLivre.getFimHorarioLivre());
+            for (Agendamento agendamento : agendamentos) {
+                var inicio = periodoLivre.getInicioHorarioLivre();
+                var fim = periodoLivre.getFimHorarioLivre();
+
+                if (agendamento.horarioIsBetween(inicio, fim)) {
+                    var horaAgendamento = agendamento.getDataHora().toLocalTime();
+
+                    AgendamentoLivreDTO horarioAposAgendamento = new AgendamentoLivreDTO(inicio, horaAgendamento);
+                    AgendamentoLivreDTO horarioAntesAgendamento = new AgendamentoLivreDTO(
+                            horaAgendamento.plus(Duration.ofMinutes(agendamento.getServico().getDuracao())), fim);
 
                     horarioLivreFuncionario.removeAgendamento(periodoLivre);
-                    horarioLivreFuncionario.addAgendamento(horarioAntesAgendamento);
                     horarioLivreFuncionario.addAgendamento(horarioAposAgendamento);
+                    horarioLivreFuncionario.addAgendamento(horarioAntesAgendamento);
 
                     atualizaPeriodoLivreComBaseAgendamento(periodoLivre, agendamento);
+                    i = 0;
                 }
-            });
-        });
+            }
+        }
 
         return horarioLivreFuncionario;
     }
 
     private static void atualizaPeriodoLivreComBaseAgendamento(AgendamentoLivreDTO periodoLivre, Agendamento agendamento) {
-        if(agendamento.getHoraInicioAgendamento().equals(periodoLivre.getInicioHorarioLivre())) {
+        if (agendamento.getHoraInicioAgendamento().equals(periodoLivre.getInicioHorarioLivre())) {
             periodoLivre.setInicioHorarioLivre(agendamento.getHoraFimAgendamento());
         }
 
-        if(agendamento.getHoraFimAgendamento().equals(periodoLivre.getFimHorarioLivre())) {
+        if (agendamento.getHoraFimAgendamento().equals(periodoLivre.getFimHorarioLivre())) {
             periodoLivre.setFimHorarioLivre(agendamento.getHoraInicioAgendamento());
         }
     }
 
-    public List<Agendamento> buscarAgendamentosPorFuncionarioData (Long idFuncionario, LocalDate data) {
+    public List<Agendamento> buscarAgendamentosPorFuncionarioData(Long idFuncionario, LocalDate data) {
         return repository.findAll(qAgendamento.funcionario.id.eq(idFuncionario)
                 .and(qAgendamento.dataHora.between(data.atStartOfDay(), data.atTime(23, 59))));
     }

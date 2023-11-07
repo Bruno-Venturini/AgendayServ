@@ -2,8 +2,8 @@ package com.agenday.agendayserv.empresa;
 
 import com.agenday.agendayserv.empresa.funcionario.Funcionario;
 import com.agenday.agendayserv.empresa.servico.Servico;
-import com.agenday.agendayserv.models.BaseEntity;
 import com.agenday.agendayserv.empresa.expediente.ExpedienteEmpresa;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class Empresa implements BaseEntity {
+public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_empresa")
     @SequenceGenerator(name = "seq_empresa", sequenceName = "seq_empresa")

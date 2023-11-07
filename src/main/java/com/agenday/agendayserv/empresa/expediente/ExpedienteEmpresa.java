@@ -1,11 +1,12 @@
 package com.agenday.agendayserv.empresa.expediente;
 
 import com.agenday.agendayserv.empresa.Empresa;
-import com.agenday.agendayserv.models.BaseEntity;
+
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalTime;
 
 @Entity
@@ -15,7 +16,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Builder
-public class ExpedienteEmpresa implements BaseEntity {
+public class ExpedienteEmpresa {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expediente_empresa")
     @SequenceGenerator(name = "seq_expediente_empresa", sequenceName = "seq_expediente_empresa")
@@ -41,4 +42,11 @@ public class ExpedienteEmpresa implements BaseEntity {
     @ManyToOne
     @JoinColumn(name = "id_empresa", updatable = true, nullable = false)
     private Empresa empresa;
+
+    public Long obterTotalMinutos() {
+        var matutino = Duration.between(getAberturaMatutino(), getFechamentoMatutino());
+        var vespertino = Duration.between(getAberturaVespertino(), getFechamentoVespertino());
+
+        return matutino.toMinutes() + vespertino.toMinutes();
+    }
 }

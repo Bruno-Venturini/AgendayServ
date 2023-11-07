@@ -1,10 +1,11 @@
 package com.agenday.agendayserv.empresa.funcionario;
 
 import com.agenday.agendayserv.empresa.Empresa;
-import com.agenday.agendayserv.models.BaseEntity;
+import com.agenday.agendayserv.empresa.servico.Servico;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "funcionario", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }, name = "cku_email_funcionario")})
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-public class Funcionario implements BaseEntity {
+public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_funcionario")
     @SequenceGenerator(name = "seq_funcionario", sequenceName = "seq_funcionario")
@@ -35,4 +36,11 @@ public class Funcionario implements BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa", updatable = true, nullable = false)
     private Empresa empresa;
+
+    @ManyToMany
+    @JoinTable(
+        name = "funcionario_servico",
+        joinColumns = @JoinColumn(name = "id_funcionario"),
+        inverseJoinColumns = @JoinColumn(name = "id_servico"))
+    private Set<Servico> servicos;
 }

@@ -2,10 +2,8 @@ package com.agenday.agendayserv.empresa.expediente;
 
 import com.agenday.agendayserv.empresa.EmpresaRepository;
 import com.agenday.agendayserv.exceptions.NotFoundException;
-import com.agenday.agendayserv.models.QExpedienteEmpresa;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +14,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class ExpedienteEmpresaService {
     private ModelMapper modelMapper;
     private ExpedienteEmpresaRepository repository;

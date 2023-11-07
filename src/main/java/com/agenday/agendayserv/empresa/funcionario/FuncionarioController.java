@@ -3,7 +3,6 @@ package com.agenday.agendayserv.empresa.funcionario;
 import com.agenday.agendayserv.empresa.EmpresaRepository;
 import com.agenday.agendayserv.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("empresas/{idEmpresa}/funcionarios")
 @AllArgsConstructor
-@NoArgsConstructor
 public class FuncionarioController {
     private FuncionarioService service;
     private EmpresaRepository empresaRepository;

@@ -2,7 +2,6 @@ package com.agenday.agendayserv.cliente;
 
 import com.agenday.agendayserv.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class ClienteService {
     private ModelMapper modelMapper;
     private ClienteRepository repository;

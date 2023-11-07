@@ -1,9 +1,8 @@
 package com.agenday.agendayserv.agendamento;
 
-import com.agenday.agendayserv.agendamento.horariolivre.HorarioLivreDTO;
+import com.agenday.agendayserv.agendamento.horariolivre.HorarioLivreRepresentation;
 import com.agenday.agendayserv.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("agendamentos")
 @AllArgsConstructor
-@NoArgsConstructor
 public class AgendamentoController {
     private AgendamentoService service;
 
@@ -60,7 +58,7 @@ public class AgendamentoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/servicos/{idServico}")
+    @GetMapping("servicos/{idServico}/dias-disponiveis")
     public ResponseEntity<List<LocalDate>> obterDiasDisponiveis(
             @PathVariable Long idServico,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate inicio,
@@ -68,10 +66,10 @@ public class AgendamentoController {
         return ResponseEntity.ok(service.obterDiasDisponiveis(idServico, inicio, fim));
     }
 
-    @GetMapping("/horarios-disponiveis/empresa/{idEmpresa}")
-    public ResponseEntity<List<HorarioLivreDTO>> obterHorariosLivres (
+    @GetMapping("servicos/{idServico}/horarios-disponiveis")
+    public ResponseEntity<List<HorarioLivreRepresentation.HorarioLivreResponse>> obterHorariosLivres (
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate data,
-            @PathVariable Long idEmpresa) {
-        return ResponseEntity.ok(service.obterHorariosLivres(data, idEmpresa));
+            @PathVariable Long idServico) {
+        return ResponseEntity.ok(service.obterHorariosLivres(data, idServico).stream().map(HorarioLivreRepresentation.HorarioLivreResponse::from).toList());
     }
 }

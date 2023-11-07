@@ -2,7 +2,6 @@ package com.agenday.agendayserv.empresa;
 
 import com.agenday.agendayserv.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("empresas")
 @AllArgsConstructor
-@NoArgsConstructor
 public class EmpresaController {
     private EmpresaService service;
 

@@ -2,7 +2,6 @@ package com.agenday.agendayserv.agendamento;
 
 import com.agenday.agendayserv.cliente.Cliente;
 import com.agenday.agendayserv.empresa.funcionario.Funcionario;
-import com.agenday.agendayserv.models.BaseEntity;
 import com.agenday.agendayserv.agendamento.pagamento.Pagamento;
 import com.agenday.agendayserv.empresa.servico.Servico;
 import lombok.*;
@@ -18,7 +17,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Builder
-public class Agendamento implements BaseEntity {
+public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_agendamento")
     @SequenceGenerator(name = "seq_agendamento", sequenceName = "seq_agendamento")

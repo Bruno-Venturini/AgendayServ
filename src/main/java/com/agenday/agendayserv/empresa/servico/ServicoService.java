@@ -2,9 +2,7 @@ package com.agenday.agendayserv.empresa.servico;
 
 import com.agenday.agendayserv.empresa.EmpresaRepository;
 import com.agenday.agendayserv.exceptions.NotFoundException;
-import com.agenday.agendayserv.models.QServico;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class ServicoService {
     private ModelMapper modelMapper;
     private ServicoRepository repository;

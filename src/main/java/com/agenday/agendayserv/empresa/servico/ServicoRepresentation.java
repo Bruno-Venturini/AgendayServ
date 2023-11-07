@@ -26,12 +26,12 @@ public interface ServicoRepresentation {
         private String descricao;
 
         @NotNull(message = "O preço não pode ser nulo")
-        private BigDecimal preco = BigDecimal.ZERO;
+        private BigDecimal preco;
 
         @NotNull(message = "A duração não pode ser nula")
         private Integer duracao;
 
-        private Boolean ativo = Boolean.TRUE;
+        private Boolean ativo;
 
         @NotNull(message = "A empresa não pode ser nula")
         private Long empresa;
@@ -51,12 +51,12 @@ public interface ServicoRepresentation {
         private String descricao;
 
         @NotNull(message = "O preço não pode ser nulo")
-        private BigDecimal preco = BigDecimal.ZERO;
+        private BigDecimal preco;
 
         @NotNull(message = "A duração não pode ser nula")
         private Integer duracao;
 
-        private Boolean ativo = Boolean.TRUE;
+        private Boolean ativo;
 
         private List<Long> midias;
     }

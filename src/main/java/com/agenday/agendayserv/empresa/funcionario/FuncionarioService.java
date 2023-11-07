@@ -2,9 +2,7 @@ package com.agenday.agendayserv.empresa.funcionario;
 
 import com.agenday.agendayserv.empresa.EmpresaRepository;
 import com.agenday.agendayserv.exceptions.NotFoundException;
-import com.agenday.agendayserv.models.QFuncionario;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class FuncionarioService {
     private ModelMapper modelMapper;
     private FuncionarioRepository repository;
@@ -49,5 +46,9 @@ public class FuncionarioService {
 
     public List<Funcionario> obterPorEmpresa(Long idEmpresa) {
         return repository.findAll(QFuncionario.funcionario.empresa.id.eq(idEmpresa));
+    }
+
+    public List<Funcionario> obterPorServico(Long idServico) {
+        return repository.findAll(QFuncionario.funcionario.servicos.any().id.eq(idServico));
     }
 }

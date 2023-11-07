@@ -1,5 +1,6 @@
 package com.agenday.agendayserv.agendamento;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ public interface AgendamentoRepresentation {
     class AgendamentoCreateUpdate {
         @NotNull(message = "O horário não pode ser nulo")
         @NotEmpty(message = "O horário não pode ser vazio")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime dataHora;
 
         @NotNull(message = "O status não pode ser nulo")
@@ -44,6 +46,7 @@ public interface AgendamentoRepresentation {
     @Data
     class AgendamentoResponse {
         private Long id;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime dataHora;
         private StatusAgendamentoEnum status;
         private String descricao;
@@ -61,7 +64,7 @@ public interface AgendamentoRepresentation {
                     .cliente(agendamento.getCliente().getId())
                     .servico(agendamento.getServico().getId())
                     .funcionario(agendamento.getFuncionario().getId())
-                    .pagamento(agendamento.getPagamento().getId())
+                    .pagamento(agendamento.getPagamento() == null ? 0 : agendamento.getPagamento().getId())
                     .build();
         }
     }

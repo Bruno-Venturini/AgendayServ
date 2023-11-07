@@ -1,6 +1,5 @@
 package com.agenday.agendayserv.cliente;
 
-import com.agenday.agendayserv.models.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-public class Cliente implements BaseEntity {
+public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_cliente")
     @SequenceGenerator(name = "seq_cliente", sequenceName = "seq_cliente")

@@ -1,11 +1,11 @@
 package com.agenday.agendayserv.agendamento.horariolivre;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -13,11 +13,8 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgendamentoLivreDTO {
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime inicioHorarioLivre;
-
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime fimHorarioLivre;
-
-    public boolean horariosLivreIsBetween(LocalDateTime inicio, LocalDateTime fim) {
-        return this.inicioHorarioLivre.isAfter(inicio.toLocalTime()) && this.fimHorarioLivre.isBefore(fim.toLocalTime());
-    }
 }
