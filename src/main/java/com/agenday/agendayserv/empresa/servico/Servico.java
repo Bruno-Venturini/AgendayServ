@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 public class Servico {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_servico")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_servico")
     @SequenceGenerator(name = "seq_servico", sequenceName = "seq_servico")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;

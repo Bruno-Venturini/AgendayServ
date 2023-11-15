@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_cliente")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_cliente")
     @SequenceGenerator(name = "seq_cliente", sequenceName = "seq_cliente")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;

@@ -13,6 +13,7 @@ import java.util.List;
 public class ServicoService {
     private ModelMapper modelMapper;
     private ServicoRepository repository;
+    private static com.agenday.agendayserv.empresa.servico.QServico QServico;
 
     public List<Servico> getAll() {
         return repository.findAll();

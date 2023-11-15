@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 public class Empresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_empresa")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_empresa")
     @SequenceGenerator(name = "seq_empresa", sequenceName = "seq_empresa")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;

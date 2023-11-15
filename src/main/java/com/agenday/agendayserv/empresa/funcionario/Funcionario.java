@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 public class Funcionario {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_funcionario")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_funcionario")
     @SequenceGenerator(name = "seq_funcionario", sequenceName = "seq_funcionario")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;

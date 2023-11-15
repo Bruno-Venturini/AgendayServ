@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Setter
 public class ServicoMidia {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_servico_midia")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_servico_midia")
     @SequenceGenerator(name = "seq_servico_midia", sequenceName = "seq_servico_midia")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;

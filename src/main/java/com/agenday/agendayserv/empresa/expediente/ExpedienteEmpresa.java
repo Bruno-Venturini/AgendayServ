@@ -18,7 +18,7 @@ import java.time.LocalTime;
 @Builder
 public class ExpedienteEmpresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expediente_empresa")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_expediente_empresa")
     @SequenceGenerator(name = "seq_expediente_empresa", sequenceName = "seq_expediente_empresa")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;

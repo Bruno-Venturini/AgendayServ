@@ -70,9 +70,6 @@ public interface EmpresaRepresentation {
         private String nome;
         private String email;
         private String telefone;
-        private List<Long> expedientes;
-        private List<Long> servicos;
-        private List<Long> funcionarios;
 
         public static EmpresaResponse from(Empresa empresa) {
             return EmpresaResponse.builder()
@@ -80,9 +77,6 @@ public interface EmpresaRepresentation {
                     .nome(empresa.getNome())
                     .email(empresa.getEmail())
                     .telefone(empresa.getTelefone())
-                    .expedientes(empresa.getExpedientes().stream().map(ExpedienteEmpresa::getId).toList())
-                    .servicos(empresa.getServicos().stream().map(Servico::getId).toList())
-                    .funcionarios(empresa.getFuncionarios().stream().map(Funcionario::getId).toList())
                     .build();
         }
     }

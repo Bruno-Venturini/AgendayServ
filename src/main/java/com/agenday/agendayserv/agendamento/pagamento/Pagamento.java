@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Setter
 public class Pagamento {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pagamento")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_pagamento")
     @SequenceGenerator(name = "seq_pagamento", sequenceName = "seq_pagamento")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;

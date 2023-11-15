@@ -17,7 +17,7 @@ import java.util.List;
 public class ExpedienteEmpresaService {
     private ModelMapper modelMapper;
     private ExpedienteEmpresaRepository repository;
-
+    private static com.agenday.agendayserv.empresa.expediente.QExpedienteEmpresa QExpedienteEmpresa;
     @PersistenceContext
     private EntityManager entityManager;
 

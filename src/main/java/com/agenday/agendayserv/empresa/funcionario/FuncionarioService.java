@@ -13,7 +13,7 @@ import java.util.List;
 public class FuncionarioService {
     private ModelMapper modelMapper;
     private FuncionarioRepository repository;
-
+    private static com.agenday.agendayserv.empresa.funcionario.QFuncionario QFuncionario;
     public List<Funcionario> getAll() {
         return repository.findAll();
     }
