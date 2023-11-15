@@ -55,10 +55,6 @@ public interface EmpresaRepresentation {
         @NotNull(message = "O telefone não pode ser nulo")
         @NotEmpty(message = "O telefone não pode ser vazio")
         private String telefone;
-
-        private List<Long> expedientes;
-        private List<Long> servicos;
-        private List<Long> funcionarios;
     }
 
     @Builder
