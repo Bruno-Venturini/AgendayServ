@@ -18,8 +18,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -31,10 +29,6 @@ import java.util.List;
 public class AgendamentoService {
     private ModelMapper modelMapper;
     private AgendamentoRepository repository;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private ServicoService servicoService;
     private ExpedienteEmpresaService expedienteEmpresaService;
     private ClienteService clienteService;
@@ -52,7 +46,7 @@ public class AgendamentoService {
     }
 
     public Agendamento add(AgendamentoRepresentation.AgendamentoCreate create) {
-        return repository.save(Agendamento.builder()
+        var agendamento = repository.save(Agendamento.builder()
                 .dataHora(create.getDataHora())
                 .status(create.getStatus())
                 .descricao(create.getDescricao())
@@ -60,9 +54,17 @@ public class AgendamentoService {
                 .servico(servicoService.getById(create.getServico()))
                 .funcionario(funcionarioService.getById(create.getFuncionario()))
                 .build());
+
+        var email = agendamento.getCliente().getEmail();
+
+        if (!email.isEmpty()) {
+            emailService.sendEmail(email, "Agendamento", "Seu agendamento foi enviado e está pendente para aceitação!");
+        }
+
+        return agendamento;
     }
 
-    public Agendamento update(Long id, Agendamento entity) {
+    private Agendamento update(Long id, Agendamento entity) {
         var dbEntity = repository.findById(id).orElseThrow(() -> new NotFoundException("Agendamento"));
 
         modelMapper.map(entity, dbEntity);
@@ -76,10 +78,6 @@ public class AgendamentoService {
         modelMapper.map(entity, dbEntity);
 
         return repository.save(dbEntity);
-    }
-
-    public void delete(Long id) {
-        repository.deleteById(id);
     }
 
     public List<Agendamento> obterPorStatus(StatusAgendamentoEnum status) {
@@ -220,9 +218,12 @@ public class AgendamentoService {
                 .metodoPagamento(MetodoPagamentoEnum.A_VISTA).build());
 
         var email = agendamento.getCliente().getEmail();
-        
+
         if (!email.isEmpty()) {
-            emailService.sendSimpleMessage(email, "Agendamento", "Agendamento aceito!");
+            var title = "Confirmação de Agendamento";
+            var text = "Ficamos felizes em informar que seu agendamento na Agenday foi confirmado com sucesso.";
+
+            emailService.sendEmail(email, title, getHtml(title, text, agendamento));
         }
 
         return update(id, agendamento);
@@ -242,6 +243,15 @@ public class AgendamentoService {
                 .statusPagamento(StatusPagamentoEnum.CANCELADO)
                 .metodoPagamento(MetodoPagamentoEnum.A_VISTA).build());
 
+        var email = agendamento.getCliente().getEmail();
+
+        if (!email.isEmpty()) {
+            var title = "Cancelamento de Agendamento";
+            var text = "Infelizmente seu agendamento na Agenday foi cancelado, tente algum outro horário disponível.";
+
+            emailService.sendEmail(email, title, getHtml(title, text, agendamento));
+        }
+
         return update(id, agendamento);
     }
 
@@ -258,6 +268,75 @@ public class AgendamentoService {
                 .statusPagamento(StatusPagamentoEnum.CONCLUIDO)
                 .metodoPagamento(MetodoPagamentoEnum.A_VISTA).build());
 
+        var email = agendamento.getCliente().getEmail();
+
+        if (!email.isEmpty()) {
+            var title = "Cancelamento de Agendamento";
+            var text = "Seu agendamento na Agenday foi finalizado com sucesso! Que tal avaliar seu atendimento?";
+
+            emailService.sendEmail(email, title, getHtml(title, text, agendamento));
+        }
+
         return update(id, agendamento);
+    }
+
+    private String getHtml(String title, String text, Agendamento agendamento) {
+        return "<!DOCTYPE html>\n" +
+               "<html lang=\"pt-br\">\n" +
+               "<head>\n" +
+               "    <meta charset=\"UTF-8\">\n" +
+               "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+               "    <title>" + title + " - Agenday</title>\n" +
+               "    <style>\n" +
+               "        body {\n" +
+               "            font-family: Arial, sans-serif;\n" +
+               "            background-color: #f4f4f4;\n" +
+               "            margin: 0;\n" +
+               "            padding: 0;\n" +
+               "        }\n" +
+               "\n" +
+               "        .container {\n" +
+               "            max-width: 600px;\n" +
+               "            margin: 20px auto;\n" +
+               "            background-color: #fff;\n" +
+               "            padding: 20px;\n" +
+               "            border-radius: 8px;\n" +
+               "            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
+               "        }\n" +
+               "\n" +
+               "        h1 {\n" +
+               "            color: #333;\n" +
+               "        }\n" +
+               "\n" +
+               "        p {\n" +
+               "            color: #555;\n" +
+               "        }\n" +
+               "\n" +
+               "        .footer {\n" +
+               "            margin-top: 20px;\n" +
+               "            text-align: center;\n" +
+               "            color: #888;\n" +
+               "            font-size: 12px;\n" +
+               "        }\n" +
+               "    </style>\n" +
+               "</head>\n" +
+               "<body>\n" +
+               "    <div class=\"container\">\n" +
+               "        <h1>" + title + "</h1>\n" +
+               "        <p>Olá, " + agendamento.getCliente().getNome() + ",</p>\n" +
+               "        <p>" + text + "</p>\n" +
+               "        <p>Detalhes do Agendamento:</p>\n" +
+               "        <ul>\n" +
+               "            <li><strong>Data:</strong> " + agendamento.getDataHora().toLocalDate() + "</li>\n" +
+               "            <li><strong>Hora:</strong> " + agendamento.getDataHora().toLocalTime() + "</li>\n" +
+               "            <li><strong>Serviço:</strong> " + agendamento.getServico().getNome() + "</li>\n" +
+               "        </ul>\n" +
+               "        <p>Agradecemos por escolher a Agenday. Estamos ansiosos para vê-lo em breve!</p>\n" +
+               "        <div class=\"footer\">\n" +
+               "            <p>Atenciosamente,<br>Equipe Agenday</p>\n" +
+               "        </div>\n" +
+               "    </div>\n" +
+               "</body>\n" +
+               "</html>";
     }
 }

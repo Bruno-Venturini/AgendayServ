@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("agendamentos")
@@ -18,8 +19,13 @@ public class AgendamentoController {
     private AgendamentoService service;
 
     @GetMapping
-    public ResponseEntity<List<AgendamentoRepresentation.AgendamentoResponse>> getAll() {
-        return ResponseEntity.ok(service.getAll().stream().map(AgendamentoRepresentation.AgendamentoResponse::from).toList());
+    public ResponseEntity<List<AgendamentoRepresentation.AgendamentoResponse>> getAll(
+            @RequestParam(required = false) Optional<StatusAgendamentoEnum> status
+    ) {
+        return ResponseEntity.ok(status
+                .map(statusAgendamentoEnum -> service.obterPorStatus(statusAgendamentoEnum))
+                .orElseGet(() -> service.getAll())
+                .stream().map(AgendamentoRepresentation.AgendamentoResponse::from).toList());
     }
 
     @GetMapping("{id}")
@@ -39,13 +45,6 @@ public class AgendamentoController {
         return ResponseEntity
                 .created(URI.create("/" + save.getId()))
                 .body(AgendamentoRepresentation.AgendamentoResponse.from(save));
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<AgendamentoRepresentation.AgendamentoResponse> delete(@PathVariable Long id) {
-        service.delete(id);
-
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}/confirmar")
