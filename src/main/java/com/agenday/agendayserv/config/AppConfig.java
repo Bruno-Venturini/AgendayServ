@@ -1,4 +1,4 @@
-package com.agenday.agendayserv;
+package com.agenday.agendayserv.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
