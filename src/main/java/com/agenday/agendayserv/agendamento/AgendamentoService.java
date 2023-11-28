@@ -58,7 +58,10 @@ public class AgendamentoService {
         var email = agendamento.getCliente().getEmail();
 
         if (!email.isEmpty()) {
-            emailService.sendEmail(email, "Agendamento", "Seu agendamento foi enviado e está pendente para aceitação!");
+            var title = "Solicitação de Agendamento";
+            var text = "Seu agendamento na Agenday foi recebido, aguarde alguns momentos a confirmação!";
+
+            emailService.sendEmail(email, title, getHtml(title, text, agendamento));
         }
 
         return agendamento;
@@ -271,8 +274,8 @@ public class AgendamentoService {
         var email = agendamento.getCliente().getEmail();
 
         if (!email.isEmpty()) {
-            var title = "Cancelamento de Agendamento";
-            var text = "Seu agendamento na Agenday foi finalizado com sucesso! Que tal avaliar seu atendimento?";
+            var title = "Conclusão de Agendamento";
+            var text = "Seu agendamento na Agenday foi concluído com sucesso! Que tal avaliar seu atendimento?";
 
             emailService.sendEmail(email, title, getHtml(title, text, agendamento));
         }
