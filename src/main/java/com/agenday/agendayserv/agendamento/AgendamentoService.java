@@ -6,6 +6,7 @@ import com.agenday.agendayserv.agendamento.pagamento.MetodoPagamentoEnum;
 import com.agenday.agendayserv.agendamento.pagamento.Pagamento;
 import com.agenday.agendayserv.agendamento.pagamento.StatusPagamentoEnum;
 import com.agenday.agendayserv.cliente.ClienteService;
+import com.agenday.agendayserv.email.EmailService;
 import com.agenday.agendayserv.empresa.expediente.ExpedienteEmpresa;
 import com.agenday.agendayserv.empresa.expediente.ExpedienteEmpresaService;
 import com.agenday.agendayserv.empresa.funcionario.Funcionario;
@@ -38,6 +39,7 @@ public class AgendamentoService {
     private ExpedienteEmpresaService expedienteEmpresaService;
     private ClienteService clienteService;
     private FuncionarioService funcionarioService;
+    private EmailService emailService;
 
     private static final QAgendamento qAgendamento = QAgendamento.agendamento;
 
@@ -57,7 +59,6 @@ public class AgendamentoService {
                 .cliente(clienteService.getById(create.getCliente()))
                 .servico(servicoService.getById(create.getServico()))
                 .funcionario(funcionarioService.getById(create.getFuncionario()))
-//                .pagamento(empresa.findById(create.getEmpresa()).orElseThrow(() -> new NotFoundException("Empresa")))
                 .build());
     }
 
@@ -217,6 +218,12 @@ public class AgendamentoService {
                 .valor(BigDecimal.valueOf(0.0))
                 .statusPagamento(StatusPagamentoEnum.PENDENTE)
                 .metodoPagamento(MetodoPagamentoEnum.A_VISTA).build());
+
+        var email = agendamento.getCliente().getEmail();
+        
+        if (!email.isEmpty()) {
+            emailService.sendSimpleMessage(email, "Agendamento", "Agendamento aceito!");
+        }
 
         return update(id, agendamento);
     }
