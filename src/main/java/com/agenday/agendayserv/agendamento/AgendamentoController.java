@@ -33,7 +33,7 @@ public class AgendamentoController {
 
     @PostMapping
     public ResponseEntity<AgendamentoRepresentation.AgendamentoResponse> add(
-            @RequestBody AgendamentoRepresentation.AgendamentoCreateUpdate entity) {
+            @RequestBody AgendamentoRepresentation.AgendamentoCreate entity) {
         var save = service.add(entity);
 
         return ResponseEntity
@@ -41,21 +41,40 @@ public class AgendamentoController {
                 .body(AgendamentoRepresentation.AgendamentoResponse.from(save));
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<AgendamentoRepresentation.AgendamentoResponse> update(
-            @PathVariable Long id, @RequestBody AgendamentoRepresentation.AgendamentoCreateUpdate entity) {
-        try {
-            return ResponseEntity.ok().body(AgendamentoRepresentation.AgendamentoResponse.from(service.update(id, entity)));
-        } catch (NotFoundException ex) {
-            return ResponseEntity.noContent().build();
-        }
-    }
-
     @DeleteMapping("{id}")
     public ResponseEntity<AgendamentoRepresentation.AgendamentoResponse> delete(@PathVariable Long id) {
         service.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}/confirmar")
+    public ResponseEntity<AgendamentoRepresentation.AgendamentoResponse> confirmar(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok().body(AgendamentoRepresentation.AgendamentoResponse.from(service.confirmar(id)));
+        } catch (NotFoundException ex) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @PutMapping("{id}/cancelar")
+    public ResponseEntity<AgendamentoRepresentation.AgendamentoResponse> cancelar(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok().body(AgendamentoRepresentation.AgendamentoResponse.from(service.cancelar(id)));
+        } catch (NotFoundException ex) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @PutMapping("{id}/concluir")
+    public ResponseEntity<AgendamentoRepresentation.AgendamentoResponse> concluir(
+            @PathVariable Long id,
+            @RequestBody AgendamentoRepresentation.PagamentoCreate entity) {
+        try {
+            return ResponseEntity.ok().body(AgendamentoRepresentation.AgendamentoResponse.from(service.concluir(id, entity.getValor())));
+        } catch (NotFoundException ex) {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping("servicos/{idServico}/dias-disponiveis")

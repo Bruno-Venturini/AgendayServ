@@ -33,7 +33,7 @@ public class Funcionario {
     @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_empresa", updatable = true, nullable = false)
     private Empresa empresa;
 

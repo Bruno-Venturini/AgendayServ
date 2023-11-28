@@ -2,27 +2,26 @@ package com.agenday.agendayserv.agendamento;
 
 import com.agenday.agendayserv.agendamento.horariolivre.AgendamentoLivreDTO;
 import com.agenday.agendayserv.agendamento.horariolivre.HorarioLivreDTO;
+import com.agenday.agendayserv.agendamento.pagamento.MetodoPagamentoEnum;
 import com.agenday.agendayserv.agendamento.pagamento.Pagamento;
-import com.agenday.agendayserv.cliente.Cliente;
+import com.agenday.agendayserv.agendamento.pagamento.StatusPagamentoEnum;
 import com.agenday.agendayserv.cliente.ClienteService;
 import com.agenday.agendayserv.empresa.expediente.ExpedienteEmpresa;
 import com.agenday.agendayserv.empresa.expediente.ExpedienteEmpresaService;
 import com.agenday.agendayserv.empresa.funcionario.Funcionario;
 import com.agenday.agendayserv.empresa.funcionario.FuncionarioService;
-import com.agenday.agendayserv.empresa.servico.Servico;
 import com.agenday.agendayserv.empresa.servico.ServicoService;
 import com.agenday.agendayserv.exceptions.BusinessException;
 import com.agenday.agendayserv.exceptions.NotFoundException;
-import com.agenday.agendayserv.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class AgendamentoService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Agendamento"));
     }
 
-    public Agendamento add(AgendamentoRepresentation.AgendamentoCreateUpdate create) {
+    public Agendamento add(AgendamentoRepresentation.AgendamentoCreate create) {
         return repository.save(Agendamento.builder()
                 .dataHora(create.getDataHora())
                 .status(create.getStatus())
@@ -70,7 +69,7 @@ public class AgendamentoService {
         return repository.save(dbEntity);
     }
 
-    public Agendamento update(Long id, AgendamentoRepresentation.AgendamentoCreateUpdate entity) {
+    public Agendamento update(Long id, AgendamentoRepresentation.AgendamentoCreate entity) {
         var dbEntity = repository.findById(id).orElseThrow(() -> new NotFoundException("Agendamento"));
 
         modelMapper.map(entity, dbEntity);
@@ -206,61 +205,52 @@ public class AgendamentoService {
                 .and(qAgendamento.dataHora.between(data.atStartOfDay(), data.atTime(23, 59))));
     }
 
-    public void confirmar(Agendamento agendamento, LocalDateTime horario) {
-        agendamento.setStatus(StatusAgendamentoEnum.ABERTO);
-        agendamento.setDataHora(horario);
+    public Agendamento confirmar(Long id) {
+        var agendamento = getById(id);
 
-        update(agendamento.getId(), agendamento);
+        if (agendamento.getStatus() != StatusAgendamentoEnum.ABERTO)
+            throw new BusinessException("Só pode confirmar um agendamento em aberto.");
+
+        agendamento.setStatus(StatusAgendamentoEnum.AGENDADO);
+
+        agendamento.setPagamento(Pagamento.builder()
+                .valor(BigDecimal.valueOf(0.0))
+                .statusPagamento(StatusPagamentoEnum.PENDENTE)
+                .metodoPagamento(MetodoPagamentoEnum.A_VISTA).build());
+
+        return update(id, agendamento);
     }
 
-    public void cancelar(Agendamento agendamento) {
+    public Agendamento cancelar(Long id) {
+        var agendamento = getById(id);
+
+        if (agendamento.getStatus() != StatusAgendamentoEnum.ABERTO &&
+            agendamento.getStatus() != StatusAgendamentoEnum.AGENDADO)
+            throw new BusinessException("Só pode cancelar um agendamento em aberto ou agendado.");
+
         agendamento.setStatus(StatusAgendamentoEnum.CANCELADO);
 
-        update(agendamento.getId(), agendamento);
+        agendamento.setPagamento(Pagamento.builder()
+                .valor(BigDecimal.valueOf(0.0))
+                .statusPagamento(StatusPagamentoEnum.CANCELADO)
+                .metodoPagamento(MetodoPagamentoEnum.A_VISTA).build());
+
+        return update(id, agendamento);
     }
 
-    public void concluir(Agendamento agendamento, Pagamento pagamento) {
+    public Agendamento concluir(Long id, BigDecimal valor) {
+        var agendamento = getById(id);
+
+        if (agendamento.getStatus() != StatusAgendamentoEnum.AGENDADO)
+            throw new BusinessException("Só pode concluir um agendamento agendado.");
+
         agendamento.setStatus(StatusAgendamentoEnum.CONCLUIDO);
-        agendamento.setPagamento(pagamento);
 
-        update(agendamento.getId(), agendamento);
-    }
+        agendamento.setPagamento(Pagamento.builder()
+                .valor(valor)
+                .statusPagamento(StatusPagamentoEnum.CONCLUIDO)
+                .metodoPagamento(MetodoPagamentoEnum.A_VISTA).build());
 
-    private void validar(Agendamento agendamento) throws Exception {
-        var agora = LocalDateTime.now();
-
-        if (agendamento.getDataHora().isBefore(agora)) {
-            throw new Exception("É necessário que o horário seja maior que " + agora);
-        }
-
-        validarCliente(agendamento.getCliente());
-        validarServico(agendamento.getServico());
-        validarFuncionario(agendamento.getFuncionario());
-    }
-
-    private void validarCliente(Cliente cliente) {
-        if (cliente == null) {
-            throw new BusinessException("É necessário informar um cliente");
-        }
-
-        if (StringUtils.isNullOrEmpty(cliente.getNome())) {
-            throw new BusinessException("É necessário preencher o campo 'nome'");
-        }
-
-        if (StringUtils.isNullOrEmpty(cliente.getEmail()) || StringUtils.isNullOrEmpty(cliente.getTelefone())) {
-            throw new BusinessException("É necessário preencher os campos 'telefone' ou 'email'");
-        }
-    }
-
-    private void validarServico(Servico servico) {
-        if (servico == null) {
-            throw new BusinessException("É necessário informar um serviço");
-        }
-    }
-
-    private void validarFuncionario(Funcionario funcionario) {
-        if (funcionario == null) {
-            throw new BusinessException("É necessário informar um funcionário");
-        }
+        return update(id, agendamento);
     }
 }

@@ -39,8 +39,8 @@ public class ExpedienteEmpresa {
     @Column(name = "fechamento_vespertino")
     private LocalTime fechamentoVespertino;
 
-    @ManyToOne
     @JoinColumn(name = "id_empresa", updatable = true, nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Empresa empresa;
 
     public Long obterTotalMinutos() {

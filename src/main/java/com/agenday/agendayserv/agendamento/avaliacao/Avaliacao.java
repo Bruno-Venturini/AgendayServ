@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class Avaliacao {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_avaliacao")
     @SequenceGenerator(name = "seq_avaliacao", sequenceName = "seq_avaliacao")
@@ -23,7 +22,7 @@ public class Avaliacao {
     private Long id;
 
     @JoinColumn(name = "id_agendamento")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Agendamento agendamento;
 
     @Column(name = "pontuacao", nullable = false)

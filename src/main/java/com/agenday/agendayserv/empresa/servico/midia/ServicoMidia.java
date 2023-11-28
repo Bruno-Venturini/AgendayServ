@@ -25,7 +25,7 @@ public class ServicoMidia {
     @Column(name = "foto")
     private byte[] foto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_servico", nullable = false)
     private Servico servico;
 }

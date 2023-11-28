@@ -40,8 +40,8 @@ public class Servico {
     @Column(name = "ativo")
     private Boolean ativo = Boolean.TRUE;
 
-    @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Empresa empresa;
 
     @OneToMany(mappedBy = "servico")

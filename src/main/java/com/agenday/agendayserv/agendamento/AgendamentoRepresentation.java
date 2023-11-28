@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public interface AgendamentoRepresentation {
@@ -15,7 +17,7 @@ public interface AgendamentoRepresentation {
     @AllArgsConstructor
     @NoArgsConstructor
     @Data
-    class AgendamentoCreateUpdate {
+    class AgendamentoCreate {
         @NotNull(message = "O horário não pode ser nulo")
         @NotEmpty(message = "O horário não pode ser vazio")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -36,8 +38,16 @@ public interface AgendamentoRepresentation {
 
         @NotNull(message = "O funcionário não pode ser nulo")
         private Long funcionario;
+    }
 
-        private Long pagamento;
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    class PagamentoCreate {
+        @NotNull(message = "O valor não pode ser nulo")
+        @Min(value = 0, message = "O valor deve ser maior que zero")
+        private BigDecimal valor;
     }
 
     @Builder

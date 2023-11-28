@@ -1,16 +1,13 @@
 package com.agenday.agendayserv.agendamento.pagamento;
 
-import com.agenday.agendayserv.agendamento.Agendamento;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "pagamento")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,10 +18,6 @@ public class Pagamento {
     @SequenceGenerator(name = "seq_pagamento", sequenceName = "seq_pagamento")
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
-
-    @JoinColumn(name = "id_agendamento")
-    @ManyToOne
-    private Agendamento agendamento;
 
     @Column(name = "valor")
     private BigDecimal valor = BigDecimal.ZERO;
